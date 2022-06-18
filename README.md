@@ -1,8 +1,8 @@
 # Application Overview
+
 - Explain application purpose in 200-500 words.
 
 <br>
-
 
 ## Get Started
 
@@ -34,7 +34,6 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
-
 
 # Project Structure
 
@@ -92,8 +91,6 @@ src/app/features/auth
 |
 +-- hooks       # hooks scoped to a specific feature (Optional)
 |
-+-- types       # typescript types for TS specific feature domain (Optional)
-|
 +-- utils       # utility functions for a specific feature (Optional)
 |
 +-- index.ts    # entry point for the feature, it should serve as the public API of the given feature and exports everything that should be used outside the feature
@@ -110,9 +107,3 @@ You should import stuff from other features only by using:
 and not
 
 `import {AwesomeComponent} from "src/app/features/awesome-feature/components/AwesomeComponent`
-
-
-1. Routing
-2. i18n
-3. Caching
-4. RBAC

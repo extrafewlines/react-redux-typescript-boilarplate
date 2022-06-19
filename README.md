@@ -44,11 +44,7 @@ src
 |
 +-- /app/
         +-- /components         # shared layout and UI components used across the entire application
-                |
-                +-- elements            # shared UI components used across the entire application. e.g. Drawer, ConfirmationDialog, Header, etc.
-                |
-                +-- layouts             # layout components used across the entire application. e.g. MainLayout, DrawerLayout, etc!
-                |
+        |
         +-- /constants         # shared constants used across the entire application. e.g. application.ts, regex.ts, image.ts, lottie.ts
         |
         +-- /enums             # shared enums used across the entire application.

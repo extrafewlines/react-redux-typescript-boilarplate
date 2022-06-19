@@ -45,8 +45,6 @@ src
 +-- /app/
         +-- /components         # shared layout and UI components used across the entire application
         |
-        +-- /constants         # shared constants used across the entire application. e.g. application.ts, regex.ts, image.ts, lottie.ts
-        |
         +-- /enums             # shared enums used across the entire application.
         |
         +-- /features          # feature based modules. e.g features/signup, features/signin, features/dashboard, features/checkout, etc.
@@ -61,11 +59,9 @@ src
 |
 +-- assets            # assets folder can contain all the static files such as images, fonts, videos, lottie animation files etc.
 |
-+-- config            # global configuration, env variables etc. get exported from here and used in the app. e.g. config/firebase.ts, config/aws-s3.ts etc!
-|
 +-- environments      # global configuration, env variables etc. get exported from here and used in the app.
 |
-+-- libs              # re-exporting different libraries pre-configured for the application. e.g. http/axios.ts, toast.ts, date-time.ts, etc.
++-- libs              # re-exporting different libraries pre-configured for the application. e.g. http/axios.ts, firebase.ts, aws-s3.ts, toast.ts, date-time.ts, etc.
 |
 +-- store             # global state store
 |
@@ -79,7 +75,7 @@ A feature could have the following structure:
 ```sh
 src/app/features/auth
 |
-+-- routes      # route components for a specific feature pages (Required)
++-- routes      # route components for a specific feature pages (Required). e.g. features/auth/routes/signup, features/auth/routes/signup, features/dashboard/routes/machines, features/dashboard/routes/machines, etc
 |
 +-- state       # a stateful slice of the redux state tree (Optional). e.g. src/app/features/auth/state/index.ts exports auth actions and auth reducer
 |
@@ -98,8 +94,8 @@ Everything from a feature should be exported from the `index.ts` file which beha
 
 You should import stuff from other features only by using:
 
-`import {AwesomeComponent} from "src/app/features/awesome-feature"`
+`import { AwesomeComponent } from "src/app/features/awesome-feature"`
 
 and not
 
-`import {AwesomeComponent} from "src/app/features/awesome-feature/components/AwesomeComponent`
+`import { AwesomeComponent } from "src/app/features/awesome-feature/components/AwesomeComponent`

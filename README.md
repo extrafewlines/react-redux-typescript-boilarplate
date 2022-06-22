@@ -43,7 +43,7 @@ Most of the code lives in the `src` folder and looks like this:
 src
 |
 +-- /app/
-        +-- /components         # shared layout and UI components used across the entire application
+        +-- /components        # shared UI components used across the entire application
         |
         +-- /enums             # shared enums used across the entire application.
         |
@@ -75,27 +75,78 @@ A feature could have the following structure:
 ```sh
 src/app/features/auth
 |
-+-- routes      # route components for a specific feature pages (Required). e.g. features/auth/routes/signup, features/auth/routes/signup, features/dashboard/routes/machines, features/dashboard/routes/machines, etc
++-- routes      # entry point for a feature and keeps routed components for a specific feature (Required). e.g. features/auth/routes/signup, features/auth/routes/signup, features/auth/routes/signin, etc
 |
-+-- state       # a stateful slice of the redux state tree (Optional). e.g. src/app/features/auth/state/index.ts exports auth actions and auth reducer
++-- state       # stateful slice of the redux state tree (Optional). e.g. src/app/features/auth/state/index.ts exports auth actions, thunks and auth reducer
 |
-+-- components  # components scoped to a specific feature (Optional)
++-- components  # components scoped to the specific feature (Optional)
 |
-+-- hooks       # hooks scoped to a specific feature (Optional)
++-- hooks       # hooks scoped to the specific feature (Optional)
 |
-+-- utils       # utility functions for a specific feature (Optional)
-|
-+-- index.ts    # entry point for the feature, it should serve as the public API of the given feature and exports everything that should be used outside the feature
++-- utils       # utility functions for the specific feature (Optional)
 ```
 
-A feature folder could also contain other features (if used only within the parent feature) or be kept separated, it's a matter of preference.
+### How to configure redux-toolkit
+```ts
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
-Everything from a feature should be exported from the `index.ts` file which behaves as the public API of the feature.
+export const store = configureStore({
+  reducer: {},
+});
 
-You should import stuff from other features only by using:
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;
 
-`import { AwesomeComponent } from "src/app/features/awesome-feature"`
+// Use throughout your app instead of plain `useDispatch` and `useSelector`
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+```
 
-and not
+### How to configure private routes guard
+```tsx
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useAppSelector } from 'store';
 
-`import { AwesomeComponent } from "src/app/features/awesome-feature/components/AwesomeComponent`
+export const PrivateRoute = () => {
+  const location = useLocation();
+  // Only for demo purposes. Replace this with useSelector!
+  const auth = { isLoggedIn: true };
+
+  if (auth.isLoggedIn) {
+    return <Outlet />;
+  }
+
+  return <Navigate to="/auth/signin" state={{ from: location }} replace />;
+};
+```
+
+### How to configure application routes
+```tsx
+import { Suspense } from 'react';
+import { MainLayout } from 'app/layouts/MainLayout';
+import { LoaderComponent } 'app/components/Loader';
+
+const AppRoutes = () => {
+  return (
+    <MainLayout>
+      <Suspense fallback={LoaderComponent}>
+          <Route path="auth">
+              <Route path="signup" element={<SignupScreen />} />
+              <Route path="signin" element={<SigninScreen />} />
+          </Route>
+
+          <Route path="users/:id" element={<PrivateRoute/>}>
+              <Route path="profile" element={<UserProfileScreen />} />
+              <Route path="settings" element={<UserSettingsScreen />} />
+          </Route>
+
+          <Route path="*" element={<NotFound/>} />
+      </Suspense>
+    </MainLayout>
+  );
+};
+
+export default AppRoutes;
+```

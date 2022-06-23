@@ -17,7 +17,7 @@ To set up the app execute the following commands.
 git clone <repository-url>
 cd <project-name>
 cp .env.example .env.development.local (if running the project locally)
-cp .env.example .env.development.local (if running the project in production)
+cp .env.example .env.production.local (if running the project in production)
 cp .env.example .env.test (regardless of dev/prod environment, we have to add .env.test as well)
 yarn install
 ```
@@ -87,6 +87,7 @@ src/app/features/auth
 ```
 
 ### How to configure redux-toolkit
+
 ```ts
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
@@ -105,6 +106,7 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 ```
 
 ### How to configure private routes guard
+
 ```tsx
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAppSelector } from 'store';
@@ -123,6 +125,7 @@ export const PrivateRoute = () => {
 ```
 
 ### How to configure application routes
+
 ```tsx
 import { Suspense } from 'react';
 import { MainLayout } from 'app/layouts/MainLayout';
